@@ -1,7 +1,9 @@
 import {IInputs, IOutputs} from "./generated/ManifestTypes";
-
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import App from "../FileUploadControl/app";
 export class FileUploadControl implements ComponentFramework.StandardControl<IInputs, IOutputs> {
-
+    private container: HTMLDivElement;
     /**
      * Empty constructor.
      */
@@ -18,10 +20,36 @@ export class FileUploadControl implements ComponentFramework.StandardControl<IIn
      * @param state A piece of data that persists in one session for a single user. Can be set at any point in a controls life cycle by calling 'setControlState' in the Mode interface.
      * @param container If a control is marked control-type='standard', it will receive an empty div element within which it can render its content.
      */
-    public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container:HTMLDivElement): void
-    {
-        // Add control initialization code
-    }
+     public init(
+        context: ComponentFramework.Context<IInputs>,
+        notifyOutputChanged: () => void,
+        state: ComponentFramework.Dictionary,
+        container: HTMLDivElement
+      ): void {
+        this.container = container;
+    
+    
+        // Fetch the configuration dynamically
+        // fetch("./config.json") // Replace with the actual path to your configuration file
+        //   .then((response) => response.json())
+        //   .then((config) => {
+        //     const appConfig: AppConfig = {
+        //       apiKey: config.apiKey,
+        //       apiEndpoint: config.apiEndpoint,
+        //     };
+    
+        //     // Render the App component with the configuration
+        //     ReactDOM.render(React.createElement(App, { config: appConfig }), this.container);
+        //   })
+        //   .catch((error) => {
+        //     console.error("Failed to load configuration:", error);
+        //   });
+            // const appConfig: AppConfig = {
+            //   apiKey: config.apiKey,
+            //   apiEndpoint: config.apiEndpoint,
+            // };
+        ReactDOM.render(React.createElement(App,{context:context}), this.container);
+      }
 
 
     /**
