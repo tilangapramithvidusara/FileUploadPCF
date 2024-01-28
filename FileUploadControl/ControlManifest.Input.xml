@@ -32,6 +32,7 @@
     -->
     <resources>
       <code path="index.ts" order="1"/>
+      <!-- <css path="src/styles/index.css" order="1" /> -->
       <!-- UNCOMMENT TO ADD MORE RESOURCES
       <css path="css/FileUploadControl.css" order="1" />
       <resx path="strings/FileUploadControl.1033.resx" version="1.0.0" />

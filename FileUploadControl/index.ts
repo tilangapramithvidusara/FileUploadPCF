@@ -1,10 +1,14 @@
 import {IInputs, IOutputs} from "./generated/ManifestTypes";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import App from "./src/App";
 
 export class FileUploadControl implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 
     /**
      * Empty constructor.
      */
+    private container: HTMLDivElement;
     constructor()
     {
 
@@ -21,6 +25,7 @@ export class FileUploadControl implements ComponentFramework.StandardControl<IIn
     public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container:HTMLDivElement): void
     {
         // Add control initialization code
+        this.container = container;
     }
 
 
@@ -31,6 +36,7 @@ export class FileUploadControl implements ComponentFramework.StandardControl<IIn
     public updateView(context: ComponentFramework.Context<IInputs>): void
     {
         // Add code to update control view
+        ReactDOM.render(React.createElement(App, {context: context }), this.container);
     }
 
     /**
