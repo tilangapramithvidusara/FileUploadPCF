@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as React from 'react';
 import { useState } from 'react';
 import { FileUploader } from "react-drag-drop-files";
-import { fileuploader } from '../api/api';
+import { fileuploader } from '../apis/api';
 const fileTypes = ["JPG", "PNG", "ZIP","PDF","DOCX"];
 // import { FileUploaderState } from '../types/fileTypes'
 
