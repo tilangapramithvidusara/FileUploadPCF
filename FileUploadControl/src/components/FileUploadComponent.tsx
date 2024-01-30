@@ -16,18 +16,22 @@ const FileUploadComponent = () => {
     reader.onloadend = () => {
       const result = reader.result as string;
       console.log("result",result);
-     let _file = {file:result}
+     let _file = {file:result,
+      requirementIdColumnNumber : "2",
+      requirementColumnNumber   : "3"
+  }
      console.log("_file",_file);
       setSelectedFile(_file);
+      handleUpload(_file)
     };
      reader.readAsDataURL(file);
     
   };
-  const handleUpload = () => {
-    if (selectedFile) {
+  const handleUpload = (file:any) => {
+    if (file) {
         // Perform upload logic here
-        console.log('Selected file:', selectedFile)
-        fileuploader(selectedFile)
+        console.log('Selected file:', file)
+        fileuploader(file)
         // You can use PCF context to interact with the Power Apps platform
     } else {
         alert('Please select a file to upload.');
@@ -36,10 +40,9 @@ const FileUploadComponent = () => {
 
   return (
     <div>
-      <h1>Hello To Drag & Drop Files</h1>
       <FileUploader handleChange={handleFileChange} name="file" types={fileTypes} />
-      <p>{selectedFile ? `File name: ${selectedFileName}` : "no files uploaded yet"}</p>
-      <button onClick={handleUpload}>Upload</button>
+      <p>{selectedFile ? `File name: ${selectedFileName}` : "No files uploaded yet"}</p>
+      {/* <button onClick={handleUpload}>Upload</button> */}
       
     </div>
   )
