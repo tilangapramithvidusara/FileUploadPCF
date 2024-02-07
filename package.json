@@ -8,11 +8,12 @@
     "lint": "pcf-scripts lint",
     "lint:fix": "pcf-scripts lint fix",
     "rebuild": "pcf-scripts rebuild",
-    "start": "pcf-scripts start",
+    "start": "pcf-scripts start watch",
     "start:watch": "pcf-scripts start watch",
     "refreshTypes": "pcf-scripts refreshTypes"
   },
   "dependencies": {
+    "antd": "^5.14.0",
     "axios": "^1.6.7",
     "buffer": "^6.0.3",
     "react-dom": "^18.2.0",
@@ -26,7 +27,8 @@
     "@types/react-dom": "^18.2.18",
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "@typescript-eslint/parser": "^5.39.0",
-    "eslint": "^8.24.0",
+    "eslint": "^8.56.0",
+    "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.0.1",
