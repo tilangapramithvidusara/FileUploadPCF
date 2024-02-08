@@ -16698,21 +16698,15 @@ const FileUploadComponent = () => {
   }
   const handleAIWithTable = (data:any) => {
    console.log("handleAIWithTable",data);
-//    let data1 = {
-//       "TableName": "Table 3",
-//       "IsRequirement": "Yes"
-//   }
+   let yesKey = "Yes"
   const _table = tableJson.map((item :any) => {
    if (item.TableName === data.TableName) {
-     return { ...item, IsRequirement: data.IsRequirement };
+     return { ...item, IsRequirement: data.IsRequirement.includes("Yes") ? "Yes":"No" };
    } else {
      return item;
    }
  });
-
    console.log("_table11",_table);
-   
-
    setTableJson(_table)
   }
 
@@ -16761,7 +16755,7 @@ const FileUploadComponent = () => {
              </div>
           </> : (
             <div>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <label>Requirement ID Column Number:</label>
                 <input
                   type="number"
@@ -16784,7 +16778,7 @@ const FileUploadComponent = () => {
                   }}
                   onChange={(e) => setRequirementColumnNumber(e.target.value)}
                 />
-              </div>
+              </div> */}
               <FileUploader
                 handleChange={handleFileChange}
                 name="file"

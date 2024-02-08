@@ -38,7 +38,11 @@ export const  saveToTable = async(data:any) => {
   console.log("saveTable",data);
     try{
 
-    const _result = await axios.post('https://pdfscan.azurewebsites.net/api/pdfScan?code=5vkvV6Uedfkt58nuwAMjRltZJgbtlyRq4AqPvDTHkSEiAzFuDZJ8Vg==',data)
+    const _result = await axios.post('https://pdfscan.azurewebsites.net/api/ProcessSelectedTables?code=5vkvV6Uedfkt58nuwAMjRltZJgbtlyRq4AqPvDTHkSEiAzFuDZJ8Vg==',data,{
+      headers: {
+          'Content-Type': 'application/json'
+      }
+  })
     // console.log("_result",_result);
     // const TableToc = JSON.parse(_result?.data?.TOC)
     // const TableJson = JSON.parse(_result?.data?.tableList)
