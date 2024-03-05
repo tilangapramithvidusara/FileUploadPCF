@@ -8,10 +8,11 @@ export const  fileuploader = async(file:any) => {
     console.log("_result",_result);
     const TableToc = JSON.parse(_result?.data?.TOC)
     const TableJson = JSON.parse(_result?.data?.tableList)
+    const ImageList = JSON.parse(_result?.data?.imageList)
      console.log("TableToc",TableToc,TableJson);
      
     
-    return {type: "Success",data :{tableToc : TableToc,tableJson: TableJson}}
+    return {type: "Success",data :{tableToc : TableToc,tableJson: TableJson,ImageList:ImageList}}
     }catch(e){
       console.log('error');
       return {type: "Error",data :[]}
@@ -22,7 +23,7 @@ export const getRequirmentType =  async(tableData:any)=>  {
   try{
     console.log("tableData",tableData);
     
-    const _result = await axios.post('https://rfpairetrive.azurewebsites.net/api/AzureOpenAiCheckRequirmentTable?code=KZimGZVVqVOfbfmJjEQ2QPh402rhY8sio0f_ymrDAXZ1AzFu307jAw==',{
+    const _result = await axios.post('https://pdfscan.azurewebsites.net/api/AzureOpenAiCheckRequirmentTable?code=5vkvV6Uedfkt58nuwAMjRltZJgbtlyRq4AqPvDTHkSEiAzFuDZJ8Vg==',{
       tableData,
   })
   console.log("getRequirmentTypeC",_result?.data);
@@ -47,6 +48,30 @@ export const  saveToTable = async(data:any) => {
     // const TableToc = JSON.parse(_result?.data?.TOC)
     // const TableJson = JSON.parse(_result?.data?.tableList)
      console.log("TableToc",_result);
+     
+    
+    // return {type: "Success",data :{tableToc : TableToc,tableJson: TableJson}}
+    }catch(e){
+      console.log('error');
+      return {type: "Error",data :[]}
+    }
+}
+
+export const  mergeTables = async(data:any) => {
+  console.log("mergeTables",data);
+    try{
+
+    const _result = await axios.post('https://pdfscan.azurewebsites.net/api/AzureOpenAiTableContinuationChecking?code=5vkvV6Uedfkt58nuwAMjRltZJgbtlyRq4AqPvDTHkSEiAzFuDZJ8Vg==',data,{
+      headers: {
+          'Content-Type': 'application/json'
+      }
+  })
+    // console.log("_result",_result);
+    // const TableToc = JSON.parse(_result?.data?.TOC)
+    // const TableJson = JSON.parse(_result?.data?.tableList)
+     console.log("mergeTables",_result);
+
+     return {type: "Success", data : _result?.data}
      
     
     // return {type: "Success",data :{tableToc : TableToc,tableJson: TableJson}}

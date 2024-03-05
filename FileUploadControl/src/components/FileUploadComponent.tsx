@@ -1,9 +1,9 @@
 import { Spin } from "antd";
 import axios from "axios";
 import * as React from "react";
-import { useState } from "react";
+import { useState ,useEffect } from "react";
 import { FileUploader } from "react-drag-drop-files";
-import { fileuploader, saveToTable } from "../apis/api";
+import { fileuploader, mergeTables, saveToTable } from "../apis/api";
 import CommonTable from "./commonTable";
 
 const fileTypes = ["JPG", "PNG", "ZIP", "PDF", "DOCX"];
@@ -16635,7 +16635,12 @@ const tableData = [
 ]
 const Headers = ["Heading","Header Number",]
 const TableHeaders = ["Table No","Table Coloumns",]
-const FileUploadComponent = () => {
+
+interface PopupProps {
+   setIsImagesView?:any,
+ 
+}
+const FileUploadComponent : React.FC<PopupProps>= () => {
   const [selectedFile, setSelectedFile] = useState<File | any>(null);
   const [selectedFileName, setSelectedFileName] = useState<File | any>(null);
   const [requirementIdColumnNumber, setRequirementIdColumnNumber] =
@@ -16647,8 +16652,12 @@ const FileUploadComponent = () => {
   const [isTable, setIsTable] = useState<boolean>(false);
   const [tocTableJson, setTocTableJson] = useState<any>([]);
   const [tableJson, setTableJson] = useState<any>([]);
+  const [imageList, setimageList] = useState<any>([]);
   const [selectedTableNo, setSelectedTableNo] = useState<any>("");
-  
+  const [isImagesView,setIsImagesView] = useState(false)
+  const [fileUplaodView,setFileUplaodView] = useState(true)
+  const [isMergeTable,setIsMergeTable] = useState(false)
+  const [tableMergeJson, setTableMergeJson] = useState<any>([]);
   const handleFileChange = (file: any) => {
     console.log("file*", file);
     setSelectedFileName(file?.name);
@@ -16681,6 +16690,7 @@ const FileUploadComponent = () => {
 
         setTocTableJson(_responseData?.data?.tableToc);
         setTableJson(_responseData?.data?.tableJson);
+        setimageList(_responseData?.data?.ImageList);
         setLoading(false)
         setToc(true);
        
@@ -16692,9 +16702,38 @@ const FileUploadComponent = () => {
   };
 
   const saveTable = ()=> {
+   setIsMergeTable(false)
    const tableData = {selectedTables:selectedTableNo,tableList:tableJson}
    
    saveToTable(tableData)
+  }
+
+  const mergeTable = async()=> {
+   setIsMergeTable(true)
+   const tableData = {tableList:tableJson}
+   setLoading(true)
+ const _response =  await  mergeTables(tableData);
+ console.log("merge Table Response",_response);
+ 
+   // const _response = [
+   //    { Table1Name: "Table 3", Table2Name: "Table 4", Continuation: "Yes",id:1 },
+   //    { Table1Name: "Table 7", Table2Name: "Table 8", Continuation: "Yes",id:2 }
+   //  ];
+   const _table = tableJson.map((_item: any) => {
+      const _containData = _response?.data?.find(
+        (item:any) =>
+          item?.Table1Name === _item?.TableName || item?.Table2Name === _item?.TableName
+      );
+    
+      if (_containData) {
+        return { ..._item,IsRequirement:"No", isMerge: _containData?.Id, };
+      } else {
+        return { ..._item,IsRequirement:"No", isMerge: -1 };
+      }
+    });
+    setLoading(false)
+    setTableMergeJson(_table)
+
   }
   const handleAIWithTable = (data:any) => {
    console.log("handleAIWithTable",data);
@@ -16709,7 +16748,11 @@ const FileUploadComponent = () => {
    console.log("_table11",_table);
    setTableJson(_table)
   }
+  useEffect(()=> {
 
+    console.log("image996",imageList);
+    
+  },[imageList])
   return (
     <>
       {loading ? (
@@ -16718,18 +16761,20 @@ const FileUploadComponent = () => {
         <>
                 <div style={{display:'flex',marginBottom:'10px'}}>
                 <button  style={{marginRight:'10px'}} onClick={()=> {
-                 setToc(false),setIsTable(false)
+                 setToc(false),setIsTable(false),setFileUplaodView(true),setIsImagesView(false),setIsMergeTable(false)
               }}>Upload Image View</button>
 
               <button style={{marginRight:'10px'}}
                 onClick={() => {
                   setToc(true);
+                  setIsMergeTable(false),
+                  setFileUplaodView(false)
                 }}
               >
                 TOC View
               </button>
-              <button  style={{marginRight:'10px'}} onClick={(()=> {setIsTable(true) ,   setToc(false);})}>Table View</button>
-
+              <button  style={{marginRight:'10px'}} onClick={(()=> {setIsTable(true) , setIsMergeTable(false), setFileUplaodView(false), setToc(false);})}>Table View</button>
+              <button  style={{marginRight:'10px'}} onClick={(()=> {setIsImagesView(true),setIsTable(false),setFileUplaodView(false),setToc(false);})}>Images Names</button>
             
               </div>
           {isToc ? (
@@ -16737,7 +16782,7 @@ const FileUploadComponent = () => {
               {" "}
               <CommonTable data={tocTableJson} headers = {Headers} isTable ={false}/>{" "}
             </>
-          ) : isTable ? <>    <CommonTable data={tableJson} headers = {TableHeaders} isTable ={true} handleAIWithTable ={handleAIWithTable} />{" "}
+          )  : isTable ? <>    <CommonTable data={isMergeTable ? tableMergeJson :tableJson} headers = {TableHeaders} isTable ={true} handleAIWithTable ={handleAIWithTable} />{" "}
           
           <div style={{ display: "flex",marginTop:'10px' }}>
                 <label>Table NO:</label>
@@ -16749,11 +16794,20 @@ const FileUploadComponent = () => {
                     marginLeft: "10px",
                     marginRight: "13px",
                   }}
-                  onChange={(e) => setSelectedTableNo(e.target.value)}
+                  onChange={(e) =>{
+                     setIsMergeTable(false),setSelectedTableNo(e.target.value)
+                  }}
                 />
              <button onClick={saveTable}>Save</button> 
+             <button onClick={mergeTable}>Merge tables</button> 
+
              </div>
-          </> : (
+          </> : isImagesView &&  imageList?.length  ? <div style={{marginTop:'35px',position:'fixed'}}>
+
+{imageList?.map((item:any)=> {
+   return <li>{item}</li>
+})}
+</div> : fileUplaodView ? (
             <div>
               {/* <div style={{ display: "flex" }}>
                 <label>Requirement ID Column Number:</label>
@@ -16790,8 +16844,17 @@ const FileUploadComponent = () => {
                   : "No files uploaded yet"}
               </p>
               <button onClick={handleUpload}>Upload</button>
+          
+          
             </div>
-          )}
+          ): ""}
+
+{/* {isImagesView &&  imageList?.length ?  <div style={{marginTop:'35px',position:'fixed'}}>
+
+{imageList?.map((item:any)=> {
+   return <li>{item}</li>
+})}
+</div> :""}  */}
         </>
       )}
     </>
