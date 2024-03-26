@@ -36,3 +36,16 @@ body {
   height: 100vh;
   display: flex;
 }
+
+.header-container {
+  width: 100% !important;
+}
+
+.header-container {
+  width: 200px !important;
+}
+
+.header-content {
+  margin-left: 10px !important;
+  width: 500px !important;
+}
