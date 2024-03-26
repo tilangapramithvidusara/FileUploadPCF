@@ -15,20 +15,26 @@ const CustomView: React.FC = () => {
         },
         {
             id: 2,
-            type: 'h1',
+            type: 'h2',
             header: 'Header 02',
             content: 'Custom content goes here',
         },
         {
             id: 3,
-            type: 'h1',
+            type: 'h3',
             header: 'Header 03',
             content: 'Custom content goes here',
         },
         {
             id: 4,
-            type: 'h1',
+            type: 'h4',
             header: 'Header 04',
+            content: 'Custom content goes here',
+        },
+        {
+            id: 5,
+            type: 'h5',
+            header: 'Header 05',
             content: 'Custom content goes here',
         },
     ]
@@ -50,7 +56,19 @@ const CustomView: React.FC = () => {
                             {openItemId === item.id ? '▲' : '▼'}
                         </span>
                         <input type="checkbox" />
-                        <h4 className="header-container">{item.header}</h4>
+
+                        {item.type === 'h1' ? (
+                            <h1 className="header-container">{item.header}</h1>
+                        ) : item.type === 'h2' ? (
+                            <h2 className="header-container">{item.header}</h2>
+                        ) : item.type === 'h3' ? (
+                            <h3 className="header-container">{item.header}</h3>
+                        ) : item.type === 'h4' ? (
+                            <h4 className="header-container">{item.header}</h4>
+                        ) : (
+                            <h5 className="header-container">{item.header}</h5>
+                        )}
+
                     </div>
                     {openItemId === item.id && <p className='header-content'>{item.content}</p>}
                 </div>
