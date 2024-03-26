@@ -13,6 +13,11 @@
     "refreshTypes": "pcf-scripts refreshTypes"
   },
   "dependencies": {
+    "@cyntler/react-doc-viewer": "^1.14.1",
+    "@pdftron/webviewer": "^10.7.3",
+    "@syncfusion/ej2-base": "^24.2.8",
+    "@syncfusion/ej2-buttons": "^24.2.7",
+    "@syncfusion/ej2-react-documenteditor": "^24.2.9",
     "antd": "^5.14.0",
     "axios": "^1.6.7",
     "buffer": "^6.0.3",
