@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { AppInterface } from './types/fileTypes'
-import CustomView from './components/CustomView/CustomView'
+import TextComponentView from './screens/TextComponentView'
 
 const App = (props: AppInterface) => {
   return (
     <div className='app'>
-      <CustomView />
+      <TextComponentView />
     </div>
   )
 }
